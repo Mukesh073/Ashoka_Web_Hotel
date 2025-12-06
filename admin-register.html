@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration - Ashoka Hotel</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #644222, #8b5a3c);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .register-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+        }
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .register-header h2 {
+            color: #644222;
+            margin-bottom: 10px;
+        }
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .form-control:focus {
+            border-color: #644222;
+            box-shadow: 0 0 0 0.2rem rgba(100, 66, 34, 0.25);
+        }
+        .btn-register {
+            background: #644222;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            width: 100%;
+            font-weight: bold;
+        }
+        .btn-register:hover {
+            background: #8b5a3c;
+        }
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .login-link a {
+            color: #644222;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <div class="register-header">
+            <i class="bi bi-person-plus-fill" style="font-size: 3rem; color: #644222;"></i>
+            <h2>Admin Registration</h2>
+            <p style="color: #666;">Ashoka Hotel Management</p>
+        </div>
+        
+        <form id="registerForm">
+            <input type="text" class="form-control" id="username" placeholder="Username" required>
+            <input type="email" class="form-control" id="email" placeholder="Email" required>
+            <input type="password" class="form-control" id="password" placeholder="Password" required>
+            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required>
+            
+            <button type="submit" class="btn btn-register">
+                <i class="bi bi-person-plus"></i> Register Admin
+            </button>
+            
+            <div class="message" id="message"></div>
+        </form>
+        
+        <div class="login-link">
+            Already have an account? <a href="admin-login.html">Login here</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const message = document.getElementById('message');
+            
+            if (password !== confirmPassword) {
+                message.textContent = 'Passwords do not match!';
+                message.className = 'message error';
+                message.style.display = 'block';
+                return;
+            }
+            
+            const admins = JSON.parse(localStorage.getItem('admins') || '[]');
+            
+            if (admins.find(a => a.username === username)) {
+                message.textContent = 'Username already exists!';
+                message.className = 'message error';
+                message.style.display = 'block';
+                return;
+            }
+            
+            admins.push({ username, email, password });
+            localStorage.setItem('admins', JSON.stringify(admins));
+            
+            message.textContent = 'Registration successful! Redirecting...';
+            message.className = 'message success';
+            message.style.display = 'block';
+            
+            setTimeout(() => {
+                window.location.href = 'admin-login.html';
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

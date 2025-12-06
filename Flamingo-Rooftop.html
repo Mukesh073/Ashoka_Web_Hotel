@@ -1,0 +1,525 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+ <meta charset="utf-8">
+ <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flamingo Rooftop Lounge | Ashoka Hotel Gorakhpur</title>
+    <meta name="description" content="Experience the finest rooftop dining in Gorakhpur at Flamingo Lounge. Enjoy stunning city views, handcrafted drinks, and a luxury ambiance.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/animate.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/dripicons.css">
+    <link rel="stylesheet" href="css/slick.css">
+    <link rel="stylesheet" href="css/meanmenu.css">
+    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <style>
+        /* Mobile Menu Fix */
+        .mobile-nav-toggler { cursor: pointer; color: #644222; font-size: 30px; }
+
+        /* Premium Experience Box */
+        .experience-box {
+            position: relative;
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+            border: 1px solid #f0f0f0;
+            height: 100%;
+        }
+        .experience-box:hover {
+            transform: translateY(-10px);
+            background: #644222; /* Dark Brown on Hover */
+            border-color: #644222;
+        }
+        .experience-box:hover h4, 
+        .experience-box:hover p {
+            color: #fff !important;
+        }
+        .experience-box:hover .icon-box {
+            background: #fff;
+            color: #644222;
+        }
+        
+        .icon-box {
+            width: 80px; height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            background: #fdf8f0;
+            color: #c08a0b; /* Gold Icon */
+            font-size: 35px;
+            margin: 0 auto 25px;
+            transition: 0.4s;
+        }
+
+        .experience-box h4 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+            font-family: 'Playfair Display', serif; /* Royal Font */
+        }
+        .experience-box p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        /* Hero Text Override */
+        .breadcrumb-title h2 { font-family: 'Playfair Display', serif; letter-spacing: 2px; }
+
+        /* Gallery Grid */
+        .gallery-grid-img {
+            height: 300px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item { overflow: hidden; border-radius: 15px; margin-bottom: 30px; }
+        .gallery-item:hover .gallery-grid-img { transform: scale(1.1); }
+
+        .whatsapp-float { position: fixed; bottom: 80px; right: 20px; z-index: 9999; }
+        @media (max-width: 768px) { .header-top { display: none; } }
+    </style>
+</head>
+
+<body>
+    <div class="whatsapp-float">
+        <a href="https://wa.me/916388491244" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 43px; height: 43px; background: #25D366; border-radius: 50%; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); text-decoration: none;">
+            <i class="bi bi-whatsapp" style="color: white; font-size: 30px;"></i>
+        </a>
+    </div>
+
+  <header class="header-area header-three">
+        <div class="header-top second-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-8">
+                        <div class="header-cta">
+                            <ul>
+                                <!----  <li>
+                                       <i class="far fa-clock"></i>
+                                        <span>Mon - Fri: 9:00 - 19:00/ Closed on Weekends</span>
+                                    </li> -->
+                                <li>
+                             <a href="tel:+916388491244">
+        <i class="bi bi-phone"></i> <strong>+91 6388491244</strong>
+    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-4 text-right">
+                        <div class="header-social">
+                            <span>
+                                <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+                                <a href="#" title="Instagram"><i class="bi bi-instagram"></i></a>
+                                <a href="#" title="Twitter"><i class="bi bi-twitter"></i></a>
+                                <a href="#" title="YouTube"><i class="bi bi-youtube"></i></a>
+                            </span>
+                            <!--  /social media icon redux -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="header-sticky" class="menu-area">
+            <div class="container">
+                <div class="second-menu">
+                    <div class="row align-items-center">
+                        <div class="col-xl-2 col-lg-2">
+                            <div class="logo">
+                                <a href="index.html"><img src="img/logo/logo.png" alt="logo"></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-8 col-lg-8">
+
+                            <div class="main-menu text-center">
+                                <nav id="mobile-menu">
+                                    <ul>
+                                        <li class="has-sub">
+                                            <a href="index.html">Home</a>
+                                            <!---- <ul>													
+													<li><a href="index.html">Home Page 01</a></li>
+													<li><a href="index-2.html">Home Page 02</a></li>													
+													<li><a href="index-3.html">Home Page Side Menu</a></li>													
+													<li><a href="index-4.html">Home Page Full Menu</a></li>		
+												</ul>-->
+                                        </li>
+
+                                        </li>
+                                        <li class="has-sub"><a href="about.html">About</a></li>
+
+
+                                        <li class="has-sub">
+
+                                            <a href="#">our rooms</a>
+                                            <ul>
+                                                <li> <a href="standard.html">Standard Room</a></li>
+                                                <li> <a href="executive.html">Executive Room</a></li>
+                                                <li> <a href="super executive.html">Super Executive Room</a></li>
+                                                 <li> <a href="Suite.html">Suite Room</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="has-sub">
+                                            <a href="services.html">Services</a>
+                                            <ul>
+                                                  <li><a href="Flamingo-Rooftop.html">Flamingo Rooftop</a></li>
+                                                <li><a href="restaurant.html">Restaurant</a></li>
+                                                <li><a href="banquet.html">Banquet Hall</a></li>
+                                            </ul>
+                                        </li>
+                                        <!----  <li><a href="about.html">About</a></li>        
+                                            <li class="has-sub">
+                                                <a href="room.html">our rooms</a>
+                                                <ul>													
+													<li> <a href="room.html">Our Rooms</a></li>
+                                                    <li> <a href="single-rooms.html">Rooms Details</a></li>
+												</ul>
+                                            </li> -->
+                                        <!----  <li class="has-sub">
+                                                <a href="services.html">Facilities</a>
+                                                <ul>													
+													<li> <a href="services.html">Services</a></li>
+                                                    <li> <a href="single-service.html">Services Details</a></li>
+												</ul>
+                                            </li> -->
+                                        <!---- <li class="has-sub"><a href="#">Pages</a>
+												<ul>
+                                                    <li><a href="projects.html">Gallery</a></li>
+                                                    <li><a href="faq.html">Faq</a></li>
+                                                    <li><a href="team.html">Team</a></li>
+                                                    <li><a href="team-single.html">Team Details</a></li>
+                                                    <li><a href="pricing.html">Pricing</a></li>
+                                                    <li><a href="shop.html">Shop</a></li>
+													<li><a href="shop-details.html">Shop Details</a>
+                                                  </ul>
+											</li> -->
+                                        <li class="has-sub">
+                                            <a href="gallery.html">Gallery</a>
+                                            <!---- <ul>
+                                                    <li><a href="blog.html">Blog</a></li>
+                                                    <li><a href="blog-details.html">Blog Details</a></li>
+                                                </ul> -->
+                                        </li>
+                                        <li class="has-sub"><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-2 d-none d-lg-block">
+                            <a href="#" class="top-btn mt-10 mb-10" onclick="openReservationPopup()">reservation </a>
+                        </div>
+                        
+                        <!-- Mobile Menu Toggle -->
+                        <div class="col-12 d-lg-none">
+                            <div class="mobile-nav-toggler">
+                                <i class="fas fa-bars"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="mobile-menu"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        
+<section class="breadcrumb-area d-flex align-items-center"
+    style="background-image:url(images/gallery/rooftop.jpg); height: 600px; background-size: cover; background-position: center; position: relative;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4);"></div>
+    
+    <div class="container" style="position: relative; z-index: 2;">
+        <div class="row align-items-center">
+            <div class="col-xl-12 col-lg-12">
+                <div class="breadcrumb-wrap text-center">
+                    <div class="breadcrumb-title">
+                        <h5 style="color: #c08a0b; font-weight: 600; letter-spacing: 3px;">ASHOKA HOTEL PRESENTS</h5>
+                        <h2 style="font-size: 60px; margin-top: 10px;">Flamingo Rooftop Lounge</h2>
+                        <p style="color: #fff; font-size: 20px; margin-top: 15px; letter-spacing: 1px; font-weight: 300;">
+                            Dine Under The Stars in Gorakhpur
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="flamingo-section pt-100 pb-100 p-relative fix" style="background-color: #fcf9f5;">
+    
+    <div style="position: absolute; right: 0; bottom: 0; opacity: 0.1;">
+        <img src="img/bg/pattern.png" alt="" style="max-width: 300px;">
+    </div>
+
+    <div class="container">
+        <div class="row align-items-center">
+            
+            <div class="col-lg-6 col-md-12 mb-30">
+                <div class="flamingo-img-box wow fadeInLeft animated" data-delay=".4s" style="position: relative; padding-left: 20px; padding-bottom: 20px;">
+                    <div style="position: absolute; top: 0; left: 0; width: 90%; height: 90%; border: 3px solid #c08a0b; z-index: 0; border-radius: 10px;"></div>
+                    
+                    <img src="images/gallery/rooftop-vibe.jpg" alt="Flamingo Rooftop Lounge" 
+                         style="width: 100%; border-radius: 10px; position: relative; z-index: 1; box-shadow: 10px 10px 30px rgba(0,0,0,0.15);">
+                    
+                    <div style="position: absolute; bottom: 30px; right: -20px; background: #fff; padding: 15px 25px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); z-index: 2; border-left: 4px solid #c08a0b;">
+                        <h5 style="margin: 0; color: #644222; font-size: 16px; font-weight: 700;">Open Air</h5>
+                        <small style="color: #777;">Live Music & Vibes</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12">
+                <div class="about-content s-about-content wow fadeInRight animated pl-30" data-delay=".4s">
+                    <div class="about-title second-title pb-25">
+                        <h5 style="color: #c08a0b; letter-spacing: 2px;">THE SKY LOUNGE</h5>
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 40px; color: #2c2c2c;">Flamingo Rooftop</h2>
+                    </div>
+                    
+                    <p style="color: #555; font-size: 17px; line-height: 1.7; margin-bottom: 20px;">
+                        Experience the most vibrant evenings in Gorakhpur. Located at the top of Ashoka Hotel, Flamingo offers a stunning panoramic city view paired with cool breezes and soulful music.
+                    </p>
+                    <p style="color: #666; font-size: 16px; margin-bottom: 30px;">
+                        Whether it's sipping on our signature <strong>Blue Lagoon Mocktail</strong> or enjoying sizzling <strong>Tandoori Platters</strong>, every moment here is crafted for luxury and relaxation.
+                    </p>
+
+                    <ul class="rooftop-features" style="list-style: none; padding: 0; margin-bottom: 35px;">
+                        <li style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <i class="bi bi-stars" style="color: #c08a0b; font-size: 22px; margin-right: 15px;"></i>
+                            <span style="font-size: 16px; color: #333; font-weight: 500;">Best City View in Gorakhpur</span>
+                        </li>
+                        <li style="display: flex; align-items: center; margin-bottom: 15px;">
+                            <i class="bi bi-cup-straw" style="color: #c08a0b; font-size: 22px; margin-right: 15px;"></i>
+                            <span style="font-size: 16px; color: #333; font-weight: 500;">Handcrafted Mocktails & Snacks</span>
+                        </li>
+                        <li style="display: flex; align-items: center;">
+                            <i class="bi bi-music-note-beamed" style="color: #c08a0b; font-size: 22px; margin-right: 15px;"></i>
+                            <span style="font-size: 16px; color: #333; font-weight: 500;">Ambient Lighting & Music</span>
+                        </li>
+                    </ul>
+
+                    <div class="slider-btn">
+                        <a href="dining.html" class="btn ss-btn" style="background: #644222; border-color: #644222;">Explore Menu</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+\
+        <section class="services-area pt-100 pb-100" style="background-color: #fcf9f5;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title center-align mb-50 text-center">
+                            <h5 style="color: #c08a0b;">Our Offerings</h5>
+                            <h2>A Feast for Your Senses</h2>
+                            <p>We serve a curated selection of global flavors and artisanal beverages.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-30 wow fadeInUp animated" data-delay=".2s">
+                        <div class="experience-box">
+                            <div class="icon-box"><i class="bi bi-cup-cocktail"></i></div>
+                            <h4>Signature Mocktails</h4>
+                            <p>Refreshing, handcrafted beverages made with exotic fruits and herbs by our expert mixologists. Perfect for every mood.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mb-30 wow fadeInUp animated" data-delay=".4s">
+                        <div class="experience-box">
+                            <div class="icon-box"><i class="bi bi-fire"></i></div>
+                            <h4>Gourmet Delights</h4>
+                            <p>Savor the taste of our Tandoori Starters, Continental platters, and spicy Indo-Chinese specialties cooked to perfection.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 mb-30 wow fadeInUp animated" data-delay=".6s">
+                        <div class="experience-box">
+                            <div class="icon-box"><i class="bi bi-music-note-beamed"></i></div>
+                            <h4>Music & Vibes</h4>
+                            <p>Let the rhythm take over. Enjoy soothing ambient music that complements the stunning panoramic view of Gorakhpur.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="pt-100 pb-70">
+            <div class="container">
+                 <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title center-align mb-50 text-center">
+                            <h5>Gallery</h5>
+                            <h2>Glimpses of Flamingo</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6"><div class="gallery-item"><img src="images/gallery/gallery1.jpg" alt="Rooftop View" class="gallery-grid-img"></div></div>
+                    <div class="col-lg-4 col-md-6"><div class="gallery-item"><img src="images/gallery/gallery2.jpg" alt="Drinks" class="gallery-grid-img"></div></div>
+                    <div class="col-lg-4 col-md-6"><div class="gallery-item"><img src="images/gallery/gallery3.jpg" alt="Seating Area" class="gallery-grid-img"></div></div>
+                    <div class="col-lg-4 col-md-6"><div class="gallery-item"><img src="images/gallery/gallery4.jpg" alt="Night Vibe" class="gallery-grid-img"></div></div>
+                    <div class="col-lg-4 col-md-6"><div class="gallery-item"><img src="images/gallery/gallery5.jpg" alt="Food" class="gallery-grid-img"></div></div>
+                    <div class="col-lg-4 col-md-6"><div class="gallery-item"><img src="images/gallery/gallery6.jpg" alt="Ambience" class="gallery-grid-img"></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="offer-banner" style="background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('images/gallery/rooftop.jpg'); background-size: cover; padding: 100px 0; text-align: center; color: #fff; background-attachment: fixed;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 wow fadeInUp animated">
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 45px; margin-bottom: 20px; color: #fff;">Ready for a Perfect Evening?</h2>
+                        <p style="font-size: 18px; margin-bottom: 40px; color: #ddd;">Join us at Flamingo for an experience that delights your taste buds and soul.</p>
+                        <a href="tel:+916388491244" class="btn ss-btn" style="background: #c08a0b; color: #fff; border: none; padding: 15px 40px;">Book Your Table Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+  <footer class="footer-bg footer-p">
+    <div class="footer-top pt-90 pb-40" style="background-color: #644222; background-image: url(img/bg/footer-bg.png);">
+        <div class="container">
+            <div class="row justify-content-between">
+                
+                <div class="col-xl-4 col-lg-4 col-sm-6">
+                    <div class="footer-widget mb-30">
+                        <div class="f-widget-title mb-30">
+                            <img src="img/logo/logo.png" alt="Ashoka Hotel Logo">
+                        </div>
+                        <div class="footer-text mb-20">
+                          <p style="color: #dcdcdc; line-height: 1.8;">
+                Ashoka Hotel is Gorakhpur's premier destination for luxury stays, fine dining, and grand events. 
+                Located conveniently near key attractions, we offer a perfect blend of modern comfort and traditional hospitality.
+            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-sm-6">
+                    <div class="footer-widget mb-30">
+                        <div class="f-widget-title">
+                            <h2>Quick Links</h2>
+                        </div>
+                        <div class="footer-link">
+                            <ul>
+                                <li><a href="index.html">Home</a></li>
+                                <li><a href="about.html">About Us</a></li>
+                                 <li><a href="#">Flamingo Rooftop</a></li>
+                                <li><a href="restaurant.html">Restaurant</a></li>
+                                <li><a href="banquet.html">Banquet Hall</a></li>
+                                <li><a href="gallery.html">Gallery</a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-sm-12">
+                    <div class="footer-widget mb-30">
+                        <div class="f-widget-title">
+                            <h2>Contact Us</h2>
+                        </div>
+                        <div class="f-contact">
+                            <ul>
+                                <li class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-phone me-3 mt-1"></i>
+                                    <a href="tel:+916388491244" class="mt-2">+91 6388491244</a>
+                                </li>
+                                <li class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-envelope me-3 mt-1"></i>
+                                    <a href="mailto:ashokahotelgkp@gmail.com" class="text-decoration-none mt-2">
+                                        ashokahotelgkp@gmail.com
+                                    </a>
+                                </li>
+                                <li class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-geo-alt me-3 mt-2"></i>
+                                    <a href="https://www.google.com/maps/place/Ashoka+Hotel+%26+Banquet+Hall%2FWhere+Comfort+Meets+Luxury/@26.7475055,83.3957202,15z/data=!3m1!4b1!4m10!3m9!1s0x39914570ddc7b6cf:0x989832251e9717ac!5m3!1s2025-09-16!4m1!1i2!8m2!3d26.7474875!4d83.4141743!16s%2Fg%2F11vqh39d8d?entry=ttu&g_ep=EgoyMDI1MDkxMC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
+                                        Ashoka Hotel, Near Hanuman Mandir,<br> Deoria Road, Kuraghat, Gorakhpur
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright-wrap" style="padding: 0.2em 0; min-height: 10px; line-height: 1.0;">
+        <div class="whatsapp-float">
+            <a href="https://wa.me/916388491244" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 43px; height: 43px; background: #25D366; border-radius: 50%; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); text-decoration: none; transition: all 0.3s ease;">
+                <i class="bi bi-whatsapp" style="color: white; font-size: 30px;"></i>
+            </a>
+        </div>
+        
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    Copyright © Ashoka Hotel 2025 . All rights reserved.
+                </div>
+                <div class="col-lg-6 col-md-6 text-right text-xl-right white-text">
+                    <span>Developed by <a href="https://www.shineinfosolutions.in/" class="text-white"> Shine Infosolutions </a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    <div id="reservationPopup" class="popup-overlay" style="display: none;">
+        <div class="popup-content">
+            <span class="popup-close" onclick="closeReservationPopup()">×</span>
+            <h3>Reserve Table</h3>
+            <form id="reservationForm">
+                <div class="form-group"><label>Name</label><input type="text" id="popupName" required></div>
+                <div class="form-group"><label>Mobile</label><input type="tel" id="popupMobile" required></div>
+                <div class="form-group"><label>Date & Time</label><input type="datetime-local" id="popupDate" required></div>
+                <button type="submit" class="btn-submit">Confirm Booking</button>
+            </form>
+        </div>
+    </div>
+    <style>.popup-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10000;display:flex;align-items:center;justify-content:center}.popup-content{background:#fff;padding:30px;border-radius:10px;width:90%;max-width:400px;position:relative}.popup-close{position:absolute;top:10px;right:15px;font-size:24px;cursor:pointer}.form-group{margin-bottom:15px}.form-group input,.form-group select{width:100%;padding:10px;border:1px solid #ddd;border-radius:5px}.btn-submit{width:100%;padding:12px;background:#644222;color:#fff;border:none;border-radius:5px;cursor:pointer}</style>
+    <script>
+        function openReservationPopup(){document.getElementById('reservationPopup').style.display='flex'}
+        function closeReservationPopup(){document.getElementById('reservationPopup').style.display='none'}
+    </script>
+
+    <script src="js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/ajax-form.js"></script>
+    <script src="js/paroller.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/js_isotope.pkgd.min.js"></script>
+    <script src="js/imagesloaded.min.js"></script>
+    <script src="js/parallax.min.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.counterup.min.js"></script>
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <script src="js/jquery.meanmenu.min.js"></script>
+    <script src="js/parallax-scroll.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/element-in-view.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

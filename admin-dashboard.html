@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Ashoka Hotel</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background: #f8f9fa; font-family: Arial, sans-serif; }
+        .sidebar { background: #644222; height: 100vh; position: fixed; width: 250px; color: white; }
+        .sidebar a { color: white; padding: 15px; display: block; text-decoration: none; }
+        .sidebar a:hover { background: rgba(255,255,255,0.1); }
+        .main-content { margin-left: 250px; padding: 20px; }
+        .card { margin-bottom: 20px; }
+        .booking-card { background: white; padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid #644222; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="text-center py-4">
+            <h4>Ashoka Hotel</h4>
+            <small>Admin Panel</small>
+        </div>
+        <a href="#" onclick="showSection('dashboard')"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="#" onclick="showSection('bookings')"><i class="bi bi-calendar-check"></i> Bookings</a>
+        <a href="#" onclick="showSection('book-room')"><i class="bi bi-plus-circle"></i> Book Room</a>
+        <a href="#" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </div>
+
+    <div class="main-content">
+        <div id="dashboard-section">
+            <h3>Dashboard</h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h5>Total Bookings</h5>
+                            <h2 id="totalBookings">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-success">
+                        <div class="card-body">
+                            <h5>Today's Bookings</h5>
+                            <h2 id="todayBookings">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card text-white bg-warning">
+                        <div class="card-body">
+                            <h5>Pending</h5>
+                            <h2 id="pendingBookings">0</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="bookings-section" style="display: none;">
+            <h3>Customer Bookings</h3>
+            <div id="bookingsList"></div>
+        </div>
+
+        <div id="book-room-section" style="display: none;">
+            <h3>Book a Room</h3>
+            <div class="card">
+                <div class="card-body">
+                    <form id="bookingForm">
+                        <h6 class="text-primary mb-3"><i class="bi bi-person"></i> Customer Information</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Full Name *</label>
+                                <input type="text" class="form-control" id="fullname" placeholder="Enter customer name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Mobile Number *</label>
+                                <input type="tel" class="form-control" id="mobile" placeholder="Enter mobile number" required>
+                            </div>
+                        </div>
+                        
+                        <h6 class="text-primary mb-3 mt-3"><i class="bi bi-calendar"></i> Booking Dates</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Check-in Date *</label>
+                                <input type="date" class="form-control" id="checkin" required onchange="calculateNights()">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Check-out Date *</label>
+                                <input type="date" class="form-control" id="checkout" required onchange="calculateNights()">
+                            </div>
+                        </div>
+                        
+                        <h6 class="text-primary mb-3 mt-3"><i class="bi bi-door-open"></i> Booking Details</h6>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label>Adults *</label>
+                                <input type="number" class="form-control" id="adults" value="1" min="1" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Children</label>
+                                <input type="number" class="form-control" id="children" value="0" min="0">
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Room Type *</label>
+                                <select class="form-control" id="room" required onchange="calculateAmount()">
+                                    <option value="">Select Room</option>
+                                    <option value="Standard Room" data-price="2500">Standard Room</option>
+                                    <option value="Executive Room" data-price="3500">Executive Room</option>
+                                    <option value="Super Executive Room" data-price="4500">Super Executive</option>
+                                    <option value="Suite Room" data-price="6000">Suite Room</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Occupancy</label>
+                                <select class="form-control" id="occupancy" onchange="calculateAmount()">
+                                    <option value="">Select</option>
+                                    <option value="single">Single</option>
+                                    <option value="double">Double</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="extraBed" onchange="calculateAmount()">
+                                    <label class="form-check-label" for="extraBed">Extra Bed (+₹500/night)</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h6 class="text-primary mb-3 mt-3"><i class="bi bi-calculator"></i> Price Calculation</h6>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label>Nights</label>
+                                <input type="text" class="form-control" id="nights" value="0" readonly>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Tax (5%)</label>
+                                <input type="text" class="form-control" id="gst" value="₹0" readonly>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Total Amount *</label>
+                                <input type="number" class="form-control" id="amount" placeholder="Auto-calculated" readonly required>
+                            </div>
+                        </div>
+                        
+                        <h6 class="text-primary mb-3 mt-3"><i class="bi bi-receipt"></i> Payment Receipt (Optional)</h6>
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <input type="file" class="form-control" id="receipt" accept="image/*">
+                                <small class="text-muted">Upload receipt if payment already received</small>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <button type="submit" class="btn btn-primary btn-lg w-100"><i class="bi bi-check-circle"></i> Direct Book</button>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <button type="button" class="btn btn-success btn-lg w-100" onclick="generateLink()"><i class="bi bi-link-45deg"></i> Generate Customer Link</button>
+                            </div>
+                        </div>
+                        <div id="linkBox" class="alert alert-success mt-3" style="display:none;">
+                            <h6><i class="bi bi-check-circle"></i> Customer Link Generated!</h6>
+                            <div class="input-group">
+                                <input type="text" id="generatedLink" class="form-control" readonly>
+                                <button class="btn btn-outline-success" onclick="copyLink()"><i class="bi bi-clipboard"></i> Copy</button>
+                            </div>
+                            <small class="text-muted">Share this link with customer to upload payment receipt</small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            localStorage.removeItem('adminToken');
+            window.location.href = 'admin-login.html';
+        }
+
+        function showSection(section) {
+            document.getElementById('dashboard-section').style.display = 'none';
+            document.getElementById('bookings-section').style.display = 'none';
+            document.getElementById('book-room-section').style.display = 'none';
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            if (section === 'bookings') loadBookings();
+            if (section === 'dashboard') loadDashboard();
+        }
+
+        function loadDashboard() {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const today = new Date().toDateString();
+            const todayBookings = bookings.filter(b => new Date(b.created_at).toDateString() === today);
+            const pendingBookings = bookings.filter(b => b.status === 'pending');
+            
+            document.getElementById('totalBookings').textContent = bookings.length;
+            document.getElementById('todayBookings').textContent = todayBookings.length;
+            document.getElementById('pendingBookings').textContent = pendingBookings.length;
+        }
+
+        function loadBookings() {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const list = document.getElementById('bookingsList');
+            
+            if (bookings.length === 0) {
+                list.innerHTML = '<div class="alert alert-info">No bookings found</div>';
+                return;
+            }
+
+            let html = '';
+            bookings.forEach(b => {
+                const receiptImg = b.receipt ? `<div class="mt-2"><img src="${b.receipt}" style="max-width: 200px; border: 2px solid #ddd; border-radius: 5px; cursor: pointer;" onclick="window.open('${b.receipt}', '_blank')" title="Click to view full size"></div>` : '<p class="text-muted">No receipt uploaded</p>';
+                const confirmBtn = b.status === 'confirmed' ? '' : `<button class="btn btn-sm btn-success ms-2" onclick="updateStatus('${b.id}', 'confirmed')">Confirm</button>`;
+                html += `
+                    <div class="booking-card">
+                        <h5>${b.fullname}</h5>
+                        <p><strong>Mobile:</strong> ${b.mobile} | <strong>Room:</strong> ${b.room}</p>
+                        <p><strong>Check-in:</strong> ${b.checkin} | <strong>Check-out:</strong> ${b.checkout}</p>
+                        <p><strong>Adults:</strong> ${b.adults} | <strong>Amount:</strong> ₹${b.amount}</p>
+                        ${receiptImg}
+                        <div class="mt-2">
+                            <span class="badge bg-${b.status === 'confirmed' ? 'success' : 'warning'}">${b.status}</span>
+                            ${confirmBtn}
+                            <button class="btn btn-sm btn-danger ms-2" onclick="deleteBooking('${b.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            list.innerHTML = html;
+        }
+
+        function updateStatus(id, status) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.id === id);
+            if (booking) {
+                booking.status = status;
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                alert('Booking confirmed!');
+                loadBookings();
+                loadDashboard();
+            }
+        }
+
+        function deleteBooking(id) {
+            if (confirm('Delete this booking?')) {
+                let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                bookings = bookings.filter(b => b.id !== id);
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                loadBookings();
+                loadDashboard();
+            }
+        }
+
+        function calculateNights() {
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            if (checkin && checkout) {
+                const nights = Math.ceil((new Date(checkout) - new Date(checkin)) / (1000 * 60 * 60 * 24));
+                document.getElementById('nights').value = nights > 0 ? nights : 0;
+                calculateAmount();
+            }
+        }
+        
+        function calculateAmount() {
+            const roomSelect = document.getElementById('room');
+            const nights = parseInt(document.getElementById('nights').value) || 0;
+            const occupancy = document.getElementById('occupancy').value;
+            const extraBed = document.getElementById('extraBed').checked;
+            
+            if (!roomSelect.value || nights === 0) return;
+            
+            let basePrice = parseInt(roomSelect.options[roomSelect.selectedIndex].dataset.price) || 0;
+            if (occupancy === 'double') basePrice += 500;
+            
+            const roomAmount = basePrice * nights;
+            const extraBedAmount = extraBed ? (500 * nights) : 0;
+            const totalBase = roomAmount + extraBedAmount;
+            const gstAmount = Math.round(totalBase * 0.05);
+            const totalAmount = totalBase + gstAmount;
+            
+            document.getElementById('gst').value = '₹' + gstAmount;
+            document.getElementById('amount').value = totalAmount;
+        }
+        
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('receipt');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    saveDirectBooking(event.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                saveDirectBooking(null);
+            }
+            
+            function saveDirectBooking(receiptData) {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                const mobile = document.getElementById('mobile').value;
+                const checkin = document.getElementById('checkin').value;
+                const room = document.getElementById('room').value;
+                
+                // Check if booking already exists
+                const existingIndex = bookings.findIndex(b => b.mobile === mobile && b.checkin === checkin && b.room === room);
+                
+                if (existingIndex !== -1 && bookings[existingIndex].status === 'confirmed') {
+                    // Update existing confirmed booking
+                    bookings[existingIndex].receipt = receiptData;
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    alert('Booking updated successfully! ID: ' + bookings[existingIndex].id);
+                } else if (existingIndex === -1) {
+                    // Create new booking
+                    const booking = {
+                        id: 'BK' + Date.now(),
+                        fullname: document.getElementById('fullname').value,
+                        mobile: mobile,
+                        checkin: checkin,
+                        checkout: document.getElementById('checkout').value,
+                        nights: document.getElementById('nights').value,
+                        room: room,
+                        adults: document.getElementById('adults').value,
+                        children: document.getElementById('children').value,
+                        occupancy: document.getElementById('occupancy').value,
+                        extraBed: document.getElementById('extraBed').checked,
+                        amount: document.getElementById('amount').value,
+                        receipt: receiptData,
+                        status: 'confirmed',
+                        created_at: new Date().toISOString()
+                    };
+                    
+                    bookings.push(booking);
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    alert('Booking created successfully! ID: ' + booking.id);
+                }
+                
+                document.getElementById('bookingForm').reset();
+                document.getElementById('nights').value = '0';
+                document.getElementById('gst').value = '₹0';
+                loadDashboard();
+                showSection('bookings');
+            }
+        });
+
+        function generateLink() {
+            const data = {
+                fullname: document.getElementById('fullname').value,
+                mobile: document.getElementById('mobile').value,
+                checkin: document.getElementById('checkin').value,
+                checkout: document.getElementById('checkout').value,
+                nights: document.getElementById('nights').value,
+                room: document.getElementById('room').value,
+                adults: document.getElementById('adults').value,
+                children: document.getElementById('children').value,
+                occupancy: document.getElementById('occupancy').value,
+                extraBed: document.getElementById('extraBed').checked,
+                amount: document.getElementById('amount').value
+            };
+            
+            if (!data.fullname || !data.mobile || !data.room || !data.amount) {
+                alert('Please fill all required fields first!');
+                return;
+            }
+            
+            // Create booking with pending status
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = {
+                id: 'BK' + Date.now(),
+                fullname: data.fullname,
+                mobile: data.mobile,
+                checkin: data.checkin,
+                checkout: data.checkout,
+                nights: data.nights,
+                room: data.room,
+                adults: data.adults,
+                children: data.children,
+                occupancy: data.occupancy,
+                extraBed: data.extraBed,
+                amount: data.amount,
+                receipt: null,
+                status: 'pending',
+                created_at: new Date().toISOString()
+            };
+            bookings.push(booking);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            
+            const roomPages = {
+                'Standard Room': 'standard.html',
+                'Executive Room': 'executive.html',
+                'Super Executive Room': 'super executive.html',
+                'Suite Room': 'Suite.html'
+            };
+            
+            const roomPage = roomPages[data.room] || 'standard.html';
+            const encoded = btoa(JSON.stringify(data));
+            const link = window.location.origin + window.location.pathname.replace('admin-dashboard.html', roomPage) + '?data=' + encoded;
+            document.getElementById('generatedLink').value = link;
+            document.getElementById('linkBox').style.display = 'block';
+            loadDashboard();
+        }
+        
+        function copyLink() {
+            const input = document.getElementById('generatedLink');
+            input.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard!');
+        }
+        
+        if (!localStorage.getItem('adminToken')) {
+            window.location.href = 'admin-login.html';
+        } else {
+            loadDashboard();
+        }
+    </script>
+</body>
+</html>
