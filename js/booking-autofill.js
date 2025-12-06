@@ -98,28 +98,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 saveBooking(null);
             }
             
-            function saveBooking(receiptData) {
-                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            async function saveBooking(receiptData) {
                 const mobile = document.getElementById('mobile').value;
                 const checkin = document.getElementById('checkin').value;
                 const room = document.querySelector('.breadcrumb-title h2').textContent;
                 
-                // Check if booking already exists (from generated link)
-                const existingIndex = bookings.findIndex(b => b.mobile === mobile && b.checkin === checkin && b.room === room);
+                const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+                const bookings = await fetch(`${API_URL}/api/bookings`).then(r => r.json());
+                const existing = bookings.find(b => 
+                    b.mobile === mobile && 
+                    b.checkin === checkin && 
+                    (b.room === room || b.room.includes(room.split(' ')[0]) || room.includes(b.room.split(' ')[0]))
+                );
                 
                 const notification = document.getElementById('fixedNotification');
                 
-                if (existingIndex !== -1) {
-                    // Update existing booking with receipt
-                    bookings[existingIndex].receipt = receiptData;
-                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                if (existing) {
+                    await fetch(`${API_URL}/api/bookings/${existing.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ receipt: receiptData, status: 'pending' })
+                    });
                     
-                    notification.textContent = '✓ Receipt uploaded! Booking ID: ' + bookings[existingIndex].id;
+                    notification.textContent = '✓ Receipt uploaded! Booking ID: ' + existing.id;
                     notification.style.display = 'block';
                     notification.style.background = '#28a745';
                     notification.style.color = 'white';
                 } else {
-                    // Create new booking
                     const formData = {
                         id: 'BK' + Date.now(),
                         fullname: document.getElementById('fullname').value,
@@ -134,12 +139,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         amount: document.getElementById('totalAmount').textContent,
                         room: room,
                         receipt: receiptData,
-                        status: 'pending',
-                        created_at: new Date().toISOString()
+                        status: 'pending'
                     };
                     
-                    bookings.push(formData);
-                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    await fetch(`${API_URL}/api/bookings`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
                     
                     notification.textContent = '✓ Booking submitted! ID: ' + formData.id;
                     notification.style.display = 'block';

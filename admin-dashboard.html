@@ -177,6 +177,7 @@
         </div>
     </div>
 
+    <script src="js/api.js"></script>
     <script>
         function logout() {
             localStorage.removeItem('adminToken');
@@ -193,8 +194,8 @@
             if (section === 'dashboard') loadDashboard();
         }
 
-        function loadDashboard() {
-            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+        async function loadDashboard() {
+            const bookings = await getBookings();
             const today = new Date().toDateString();
             const todayBookings = bookings.filter(b => new Date(b.created_at).toDateString() === today);
             const pendingBookings = bookings.filter(b => b.status === 'pending');
@@ -204,8 +205,8 @@
             document.getElementById('pendingBookings').textContent = pendingBookings.length;
         }
 
-        function loadBookings() {
-            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+        async function loadBookings() {
+            const bookings = await getBookings();
             const list = document.getElementById('bookingsList');
             
             if (bookings.length === 0) {
@@ -235,23 +236,19 @@
             list.innerHTML = html;
         }
 
-        function updateStatus(id, status) {
-            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-            const booking = bookings.find(b => b.id === id);
-            if (booking) {
-                booking.status = status;
-                localStorage.setItem('bookings', JSON.stringify(bookings));
-                alert('Booking confirmed!');
-                loadBookings();
-                loadDashboard();
-            }
+        async function updateStatus(id, status) {
+            await updateBooking(id, { status });
+            alert('Booking confirmed!');
+            loadBookings();
+            loadDashboard();
         }
 
-        function deleteBooking(id) {
+        async function deleteBooking(id) {
             if (confirm('Delete this booking?')) {
-                let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-                bookings = bookings.filter(b => b.id !== id);
-                localStorage.setItem('bookings', JSON.stringify(bookings));
+                const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+                await fetch(`${API_URL}/api/bookings/${id}`, {
+                    method: 'DELETE'
+                });
                 loadBookings();
                 loadDashboard();
             }
@@ -304,22 +301,18 @@
                 saveDirectBooking(null);
             }
             
-            function saveDirectBooking(receiptData) {
-                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            async function saveDirectBooking(receiptData) {
                 const mobile = document.getElementById('mobile').value;
                 const checkin = document.getElementById('checkin').value;
                 const room = document.getElementById('room').value;
                 
-                // Check if booking already exists
-                const existingIndex = bookings.findIndex(b => b.mobile === mobile && b.checkin === checkin && b.room === room);
+                const bookings = await getBookings();
+                const existing = bookings.find(b => b.mobile === mobile && b.checkin === checkin && b.room === room);
                 
-                if (existingIndex !== -1 && bookings[existingIndex].status === 'confirmed') {
-                    // Update existing confirmed booking
-                    bookings[existingIndex].receipt = receiptData;
-                    localStorage.setItem('bookings', JSON.stringify(bookings));
-                    alert('Booking updated successfully! ID: ' + bookings[existingIndex].id);
-                } else if (existingIndex === -1) {
-                    // Create new booking
+                if (existing) {
+                    await updateBooking(existing.id, { receipt: receiptData });
+                    alert('Booking updated! ID: ' + existing.id);
+                } else {
                     const booking = {
                         id: 'BK' + Date.now(),
                         fullname: document.getElementById('fullname').value,
@@ -334,12 +327,10 @@
                         extraBed: document.getElementById('extraBed').checked,
                         amount: document.getElementById('amount').value,
                         receipt: receiptData,
-                        status: 'confirmed',
-                        created_at: new Date().toISOString()
+                        status: 'pending'
                     };
                     
-                    bookings.push(booking);
-                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    await createBooking(booking);
                     alert('Booking created successfully! ID: ' + booking.id);
                 }
                 
@@ -351,7 +342,7 @@
             }
         });
 
-        function generateLink() {
+        async function generateLink() {
             const data = {
                 fullname: document.getElementById('fullname').value,
                 mobile: document.getElementById('mobile').value,
@@ -372,7 +363,6 @@
             }
             
             // Create booking with pending status
-            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
             const booking = {
                 id: 'BK' + Date.now(),
                 fullname: data.fullname,
@@ -387,11 +377,9 @@
                 extraBed: data.extraBed,
                 amount: data.amount,
                 receipt: null,
-                status: 'pending',
-                created_at: new Date().toISOString()
+                status: 'pending'
             };
-            bookings.push(booking);
-            localStorage.setItem('bookings', JSON.stringify(bookings));
+            await createBooking(booking);
             
             const roomPages = {
                 'Standard Room': 'standard.html',

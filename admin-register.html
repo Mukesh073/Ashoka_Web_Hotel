@@ -98,7 +98,7 @@
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
@@ -114,25 +114,28 @@
                 return;
             }
             
-            const admins = JSON.parse(localStorage.getItem('admins') || '[]');
+            const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+            const res = await fetch(`${API_URL}/api/admin/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password })
+            });
             
-            if (admins.find(a => a.username === username)) {
-                message.textContent = 'Username already exists!';
+            const data = await res.json();
+            
+            if (data.success) {
+                message.textContent = 'Registration successful! Redirecting...';
+                message.className = 'message success';
+                message.style.display = 'block';
+                
+                setTimeout(() => {
+                    window.location.href = 'admin-login.html';
+                }, 1500);
+            } else {
+                message.textContent = 'Registration failed!';
                 message.className = 'message error';
                 message.style.display = 'block';
-                return;
             }
-            
-            admins.push({ username, email, password });
-            localStorage.setItem('admins', JSON.stringify(admins));
-            
-            message.textContent = 'Registration successful! Redirecting...';
-            message.className = 'message success';
-            message.style.display = 'block';
-            
-            setTimeout(() => {
-                window.location.href = 'admin-login.html';
-            }, 1500);
         });
     </script>
 </body>

@@ -100,17 +100,23 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorMsg = document.getElementById('errorMsg');
             
-            const admins = JSON.parse(localStorage.getItem('admins') || '[]');
-            const admin = admins.find(a => a.username === username && a.password === password);
+            const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+            const res = await fetch(`${API_URL}/api/admin/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
             
-            if (admin) {
+            const data = await res.json();
+            
+            if (data.success) {
                 localStorage.setItem('adminToken', 'logged-in');
                 localStorage.setItem('currentAdmin', username);
                 window.location.href = 'admin-dashboard.html';
