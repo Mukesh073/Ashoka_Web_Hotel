@@ -49,14 +49,72 @@
         .chef-area { background-color: #fdf8f0; padding: 80px 0; }
         .chef-img img { border-radius: 10px; width: 100%; }
         
-        .whatsapp-float { position: fixed; bottom: 80px; right: 20px; z-index: 9999; }
-        @media (max-width: 768px) { .header-top { display: none; } }
+        .whatsapp-float:hover a {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 9999;
+            transition: bottom 0.3s;
+        }
+        #scrollUp {
+            position: fixed !important;
+            bottom: 130px !important;
+            right: 20px !important;
+            z-index: 2147483647 !important;
+        }
+        #scrollUp::before {
+            content: '↑';
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                bottom: 70px;
+                right: 15px;
+            }
+            .whatsapp-float a {
+                width: 45px;
+                height: 45px;
+            }
+            .whatsapp-float i {
+                font-size: 26px;
+            }
+            #scrollUp {
+                bottom: 120px !important;
+                right: 15px !important;
+            }
+            .header-top {
+                display: none !important;
+            }
+        }
+        @media (max-width: 576px) {
+            .whatsapp-float {
+                bottom: 60px;
+                right: 10px;
+            }
+            .whatsapp-float a {
+                width: 40px;
+                height: 40px;
+            }
+            .whatsapp-float i {
+                font-size: 22px;
+            }
+            #scrollUp {
+                bottom: 105px !important;
+                right: 10px !important;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="whatsapp-float">
-        <a href="https://wa.me/916388491244" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 43px; height: 43px; background: #25D366; border-radius: 50%; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); text-decoration: none;">
+        <a href="https://wa.me/916388491244" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 43px; height: 43px; background: #25D366; border-radius: 50%; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); text-decoration: none; transition: all 0.3s ease;">
             <i class="bi bi-whatsapp" style="color: white; font-size: 30px;"></i>
         </a>
     </div>
@@ -200,7 +258,7 @@
     </header>
     <main>
         <section class="breadcrumb-area d-flex align-items-center"
-            style="background-image:url(images/gallery/restaurant.jpg); height: 500px; background-size: cover; background-position: center;">
+            style="background-image:url(images/about/Ashoka\ Hotel.JPG); height: 500px; background-size: cover; background-position: center;">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-xl-12 col-lg-12">
@@ -227,7 +285,7 @@
                 <div class="row justify-content-center align-items-center">
                     <div class="col-lg-6 col-md-12 col-sm-12">
                         <div class="s-about-img p-relative wow fadeInLeft animated" data-animation="fadeInLeft" data-delay=".4s">
-                            <img src="images/gallery/restaurant.jpg" alt="Restaurant Interior" class="fantastic-main-img" style="border-radius: 10px;">
+                            <img src="img/img/ratuarant.JPG" alt="Restaurant Interior" class="fantastic-main-img" style="border-radius: 10px;">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12">
@@ -265,7 +323,7 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
                         <div class="food-item-box">
-                            <img src="images/gallery/food1.jpg" alt="Paneer Butter Masala" class="food-img">
+                            <img src="images/food/butter paneer.png" alt="Paneer Butter Masala" class="food-img">
                             <div class="food-content">
                                 <div class="food-header">
                                     <h4>Paneer Butter Masala</h4>
@@ -278,11 +336,11 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="food-item-box">
-                            <img src="images/gallery/food2.jpg" alt="Dal Makhani" class="food-img">
+                            <img src="images/food/dal makhani.png" alt="Dal Makhani" class="food-img">
                             <div class="food-content">
                                 <div class="food-header">
                                     <h4>Dal Makhani</h4>
-                                    <span class="price-tag">₹ 240</span>
+                                    <span class="price-tag">₹ 295</span>
                                 </div>
                                 <p class="food-desc">Slow-cooked black lentils with butter and cream. Served with Naan or Rice.</p>
                             </div>
@@ -291,7 +349,7 @@
 
                     <div class="col-lg-4 col-md-6">
                         <div class="food-item-box">
-                            <img src="images/gallery/food3.jpg" alt="Special Thali" class="food-img">
+                            <img src="images/food/special thali.png" alt="Special Thali" class="food-img">
                             <div class="food-content">
                                 <div class="food-header">
                                     <h4>Ashoka Special Thali</h4>
@@ -384,19 +442,13 @@
     </div>
 
     <div class="copyright-wrap" style="padding: 0.2em 0; min-height: 10px; line-height: 1.0;">
-        <div class="whatsapp-float">
-            <a href="https://wa.me/916388491244" target="_blank" style="display: flex; align-items: center; justify-content: center; width: 43px; height: 43px; background: #25D366; border-radius: 50%; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); text-decoration: none; transition: all 0.3s ease;">
-                <i class="bi bi-whatsapp" style="color: white; font-size: 30px;"></i>
-            </a>
-        </div>
-        
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6">
                     Copyright © Ashoka Hotel 2025 . All rights reserved.
                 </div>
                 <div class="col-lg-6 col-md-6 text-right text-xl-right white-text">
-                    <span>Developed by <a href="https://www.shineinfosolutions.in/" class="text-white"> Shine Infosolutions </a></span>
+                    <span>Developed by <a href="https://www.shineinfosolutions.in/" style="color: orange;"> Shine Infosolutions </a></span>
                 </div>
             </div>
         </div>
