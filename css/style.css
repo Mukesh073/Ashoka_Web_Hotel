@@ -497,10 +497,10 @@ color: #644222;
 padding: 20px 0;
 font-weight: 400;
 position: relative;
-font-size: 16px;
+font-size: 12px;
 font-family: 'Jost', sans-serif;
 text-transform: capitalize;
-letter-spacing: 1.5px;
+letter-spacing: 0.5px;
 }
 .main-menu ul li a::after {
   content: "+";

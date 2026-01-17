@@ -128,6 +128,8 @@ mainSlider();
 $('.services-active').slick({
 	dots: true,
 	infinite: true,
+	autoplay: true,
+	autoplaySpeed: 3000,
 	arrows: false,
 	speed: 1000,
 	slidesToShow: 3,
