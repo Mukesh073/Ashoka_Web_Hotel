@@ -43,6 +43,41 @@
             z-index: 9999;
             transition: bottom 0.3s;
         }
+        
+        /* Contact Form Button Styles */
+        .contact-form-btn button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 123, 255, 0.6);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .contact-form-btn {
+                bottom: 15px !important;
+                right: 15px !important;
+            }
+            .contact-form-btn button {
+                width: 45px !important;
+                height: 45px !important;
+            }
+            .contact-form-btn i {
+                font-size: 20px !important;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .contact-form-btn {
+                bottom: 10px !important;
+                right: 10px !important;
+            }
+            .contact-form-btn button {
+                width: 40px !important;
+                height: 40px !important;
+            }
+            .contact-form-btn i {
+                font-size: 18px !important;
+            }
+        }
         #scrollUp {
             position: fixed !important;
             bottom: 130px !important;
@@ -226,6 +261,56 @@
             <i class="bi bi-whatsapp" style="color: white; font-size: 30px;"></i>
         </a>
     </div>
+
+    <!-- Contact Form Button -->
+    <div class="contact-form-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+        <button onclick="openFormPopup()" style="display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: linear-gradient(135deg, #007bff, #0056b3); border: none; border-radius: 50%; box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4); cursor: pointer; transition: all 0.3s ease; color: white;">
+            <i class="bi bi-chat-dots-fill" style="font-size: 24px;"></i>
+        </button>
+    </div>
+
+    <!-- Form Popup Modal -->
+    <div id="formPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            <button onclick="closeFormPopup()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+            
+            <h3 style="margin-bottom: 20px; color: #333; text-align: center;">Inquiry Form</h3>
+            
+            <form method="POST" id="inquiryForm" style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="hidden" name="access_key" value="359e5bba-ed19-442c-8cea-168eb0039b5c">
+                <input type="text" name="name" placeholder="Your Name" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                <input type="tel" name="phone" placeholder="Phone Number" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                <input type="email" name="email" placeholder="Email Address" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                <select name="service" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    <option value="">Select Service</option>
+                    <option value="Room Booking">Room Booking</option>
+                    <option value="Restaurant">Restaurant</option>
+                    <option value="Flamingo Rooftop">Flamingo Rooftop</option>
+                    <option value="Banquet Hall">Banquet Hall</option>
+                    <option value="General Inquiry">General Inquiry</option>
+                </select>
+                <textarea name="message" placeholder="Your Message" rows="4" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
+                
+                <!-- Spam protection -->
+                <input type="text" name="_honey" style="display: none;">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" style="flex: 1; padding: 12px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="bi bi-send"></i> Submit
+                    </button>
+                    <button type="button" onclick="sendWhatsApp()" style="flex: 1; padding: 12px; background: #25D366; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                    </button>
+                </div>
+            </form>
+            
+            <div id="result" style="margin-top: 15px; text-align: center; font-weight: 500;"></div>
+        </div>
+    </div>
+
     <!-- header -->
     <header class="header-area header-three">
         <div class="header-top second-header">
@@ -1464,6 +1549,92 @@ form.addEventListener('submit', function(e) {
     <script src="js/element-in-view.js"></script>
     <script src="js/main.js"></script>
 
+    <script>
+        // Form Popup Functions
+        function openFormPopup() {
+            document.getElementById('formPopup').style.display = 'flex';
+        }
+        
+        function closeFormPopup() {
+            document.getElementById('formPopup').style.display = 'none';
+        }
+        
+        // Web3Forms Integration
+        const inquiryForm = document.getElementById('inquiryForm');
+        const inquiryResult = document.getElementById('result');
+
+        if (inquiryForm) {
+            inquiryForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(inquiryForm);
+                const object = Object.fromEntries(formData);
+                const json = JSON.stringify(object);
+                inquiryResult.innerHTML = "Please wait...";
+                inquiryResult.style.color = "#007bff";
+
+                fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: json
+                })
+                .then(async (response) => {
+                    let json = await response.json();
+                    if (response.status == 200) {
+                        inquiryResult.innerHTML = "✅ Thank you! Your inquiry has been submitted successfully.<br><strong>Our team will contact you within 30 minutes.</strong>";
+                        inquiryResult.style.color = "#28a745";
+                    } else {
+                        inquiryResult.innerHTML = json.message;
+                        inquiryResult.style.color = "#dc3545";
+                    }
+                })
+                .catch(error => {
+                    inquiryResult.innerHTML = "Something went wrong!";
+                    inquiryResult.style.color = "#dc3545";
+                })
+                .then(function() {
+                    inquiryForm.reset();
+                    setTimeout(() => {
+                        closeFormPopup();
+                    }, 2000);
+                });
+            });
+        }
+        
+        function sendWhatsApp() {
+            const form = document.getElementById('inquiryForm');
+            const name = form.querySelector('input[name="name"]').value;
+            const phone = form.querySelector('input[name="phone"]').value;
+            const email = form.querySelector('input[name="email"]').value;
+            const service = form.querySelector('select[name="service"]').value;
+            const message = form.querySelector('textarea[name="message"]').value;
+            
+            if (!name || !phone || !email || !service || !message) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            const whatsappMessage = `📋 *Inquiry Form*\n\n` +
+                `👤 Name: ${name}\n` +
+                `📞 Phone: ${phone}\n` +
+                `📧 Email: ${email}\n` +
+                `🏨 Service: ${service}\n` +
+                `💬 Message: ${message}`;
+            
+            const whatsappUrl = `https://wa.me/916388491244?text=${encodeURIComponent(whatsappMessage)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+        
+        // Close popup when clicking outside
+        document.getElementById('formPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFormPopup();
+            }
+        });
+    </script>
+
 <!-- Reservation Popup -->
 <!-- <div id="reservationPopup" class="popup-overlay" style="display: none;">
     <div class="popup-content">
@@ -1497,155 +1668,6 @@ form.addEventListener('submit', function(e) {
     </div>
 </div> -->
 
-<style>
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.popup-content {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    position: relative;
-}
-.popup-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #999;
-}
-.popup-close:hover {
-    color: #333;
-}
-.popup-content h3 {
-    margin-bottom: 20px;
-    color: #644222;
-    text-align: center;
-}
-.form-group {
-    margin-bottom: 15px;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #333;
-}
-.form-group input, .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
-}
-.btn-submit {
-    width: 100%;
-    padding: 12px;
-    background: #644222;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-.btn-submit:hover {
-    background: #533619;
-}
-</style>
-
-<script>
-function openReservationPopup() {
-    document.getElementById('reservationPopup').style.display = 'flex';
-}
-
-function closeReservationPopup() {
-    document.getElementById('reservationPopup').style.display = 'none';
-}
-
-function showNotification(message, type) {
-    let notification = document.getElementById('reservationNotification');
-    if (!notification) {
-        notification = document.createElement('div');
-        notification.id = 'reservationNotification';
-        notification.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 99999; padding: 15px 20px; border-radius: 8px; font-weight: bold; min-width: 300px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: all 0.3s ease;';
-        document.body.appendChild(notification);
-    }
-    
-    notification.innerHTML = message;
-    notification.style.display = 'block';
-    
-    if (type === 'success') {
-        notification.style.backgroundColor = '#d4edda';
-        notification.style.color = '#155724';
-        notification.style.border = '2px solid #c3e6cb';
-    } else {
-        notification.style.backgroundColor = '#f8d7da';
-        notification.style.color = '#721c24';
-        notification.style.border = '2px solid #f5c6cb';
-    }
-    
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 4000);
-}
-
-document.getElementById('reservationForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData();
-    formData.append('access_key', '4fd37b34-62b9-48fb-9ec2-8cba3dd6e7ee');
-    formData.append('name', document.getElementById('popupName').value);
-    formData.append('mobile', document.getElementById('popupMobile').value);
-    formData.append('room', document.getElementById('popupRoom').value);
-    formData.append('adults', document.getElementById('popupAdults').value);
-    formData.append('subject', 'Hotel Room Reservation Request');
-    
-    fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showNotification('✅ Reservation request sent successfully!', 'success');
-            setTimeout(() => {
-                closeReservationPopup();
-                document.getElementById('reservationForm').reset();
-            }, 2000);
-        } else {
-            showNotification('❌ Failed to send request. Please try again.', 'error');
-        }
-    })
-    .catch(error => {
-        showNotification('❌ Error occurred. Please try again.', 'error');
-    });
-});
-
-document.getElementById('reservationPopup').addEventListener('click', function(e) {
-    if (e.target === this) {
-        closeReservationPopup();
-    }
-});
-
-// Auto popup every 30 seconds
-setInterval(function() {
-    if (document.getElementById('reservationPopup').style.display !== 'flex') {
-        openReservationPopup();
-    }
-}, 30000);
-</script>
 
 </body>
 

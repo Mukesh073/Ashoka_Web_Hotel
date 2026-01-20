@@ -85,6 +85,59 @@
         </a>
     </div>
 
+    <!-- Contact Form Button -->
+    <div class="contact-form-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+        <button onclick="openFormPopup()" style="display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: linear-gradient(135deg, #007bff, #0056b3); border: none; border-radius: 50%; box-shadow: 0 4px 20px rgba(0, 123, 255, 0.4); cursor: pointer; transition: all 0.3s ease; color: white;">
+            <i class="bi bi-chat-dots-fill" style="font-size: 24px;"></i>
+        </button>
+    </div>
+
+    <!-- Form Popup Modal -->
+    <div id="formPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            <button onclick="closeFormPopup()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">&times;</button>
+            
+            <h3 style="margin-bottom: 20px; color: #333; text-align: center;">Inquiry Form</h3>
+            
+            <form method="POST" id="inquiryForm" style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="hidden" name="access_key" value="359e5bba-ed19-442c-8cea-168eb0039b5c">
+                <input type="hidden" name="subject" value="Banquet Hall Inquiry from Website">
+                <input type="hidden" name="from_name" value="Ashoka Hotel Website">
+                
+                <input type="text" name="name" placeholder="Your Name" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                <input type="tel" name="phone" placeholder="Phone Number" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                <input type="email" name="email" placeholder="Email Address" style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                <select name="service" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                    <option value="">Select Service</option>
+                    <option value="Room Booking">Room Booking</option>
+                    <option value="Restaurant">Restaurant</option>
+                    <option value="Flamingo Rooftop">Flamingo Rooftop</option>
+                    <option value="Banquet Hall">Banquet Hall</option>
+                    <option value="General Inquiry">General Inquiry</option>
+                </select>
+                <textarea name="message" placeholder="Your Message" rows="4" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; resize: vertical;"></textarea>
+                
+                <!-- Spam protection -->
+                <input type="text" name="_honey" style="display: none;">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" style="flex: 1; padding: 12px; background: #007bff; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="bi bi-send"></i> Submit
+                    </button>
+                    <button type="button" onclick="sendWhatsApp()" style="flex: 1; padding: 12px; background: #25D366; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                    </button>
+                </div>
+            </form>
+            
+            <div id="result" style="margin-top: 15px; text-align: center; font-weight: 500;"></div>
+        </div>
+    </div>
+
+
     <!-- header -->
     <header class="header-area header-three">
         <div class="header-top second-header">
@@ -733,6 +786,76 @@
     <script src="js/jquery.magnific-popup.min.js"></script>
     <script src="js/element-in-view.js"></script>
     <script src="js/main.js"></script>
+    
+    <script>
+        function openFormPopup() {
+            const popup = document.getElementById('formPopup');
+            popup.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeFormPopup() {
+            const popup = document.getElementById('formPopup');
+            popup.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function sendWhatsApp() {
+            const form = document.getElementById('inquiryForm');
+            const name = form.querySelector('input[name="name"]').value;
+            const phone = form.querySelector('input[name="phone"]').value;
+            const service = form.querySelector('select[name="service"]').value;
+            const message = form.querySelector('textarea[name="message"]').value;
+            
+            if (!name || !phone || !service) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            const whatsappMessage = `Hello! I'm ${name}\nPhone: ${phone}\nService: ${service}\nMessage: ${message}`;
+            const whatsappURL = `https://wa.me/916388491244?text=${encodeURIComponent(whatsappMessage)}`;
+            window.open(whatsappURL, '_blank');
+            closeFormPopup();
+        }
+        
+        document.getElementById('inquiryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const result = document.getElementById('result');
+            result.innerHTML = "Please wait...";
+            result.style.color = "#007bff";
+            
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    result.innerHTML = "✅ Thank you! Your inquiry has been submitted successfully.<br><strong>Our team will contact you within 30 minutes.</strong>";
+                    result.style.color = "green";
+                    this.reset();
+                    setTimeout(() => {
+                        closeFormPopup();
+                    }, 2000);
+                } else {
+                    result.innerHTML = "❌ Something went wrong. Please try again.";
+                    result.style.color = "red";
+                }
+            } catch (error) {
+                result.innerHTML = "❌ Something went wrong. Please try again.";
+                result.style.color = "red";
+            }
+        });
+        
+        // Close popup when clicking outside
+        document.getElementById('formPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeFormPopup();
+            }
+        });
+    </script>
 </body>
 
 </html>
