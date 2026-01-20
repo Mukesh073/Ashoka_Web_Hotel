@@ -260,12 +260,9 @@
             
             <form method="POST" id="inquiryForm" style="display: flex; flex-direction: column; gap: 15px;">
                 <input type="hidden" name="access_key" value="359e5bba-ed19-442c-8cea-168eb0039b5c">
-                <input type="hidden" name="subject" value="Flamingo Rooftop Inquiry from Website">
-                <input type="hidden" name="from_name" value="Ashoka Hotel Website">
-                
                 <input type="text" name="name" placeholder="Your Name" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
                 <input type="tel" name="phone" placeholder="Phone Number" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
-                <input type="email" name="email" placeholder="Email Address" style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
+                <input type="email" name="email" placeholder="Email Address" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
                 <select name="service" required style="padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px;">
                     <option value="">Select Service</option>
                     <option value="Room Booking">Room Booking</option>
@@ -296,8 +293,8 @@
         </div>
     </div>
 
-
-  <header class="header-area header-three">
+    <!-- header -->
+    <header class="header-area header-three">
         <div class="header-top second-header">
             <div class="container">
                 <div class="row align-items-center">
