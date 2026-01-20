@@ -22,11 +22,45 @@
             z-index: 9999;
             transition: bottom 0.3s;
         }
+        /* Contact Form Button Styles */
+        .contact-form-btn button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 123, 255, 0.6);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .contact-form-btn {
+                bottom: 15px !important;
+                right: 15px !important;
+            }
+            .contact-form-btn button {
+                width: 45px !important;
+                height: 45px !important;
+            }
+            .contact-form-btn i {
+                font-size: 20px !important;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .contact-form-btn {
+                bottom: 10px !important;
+                right: 10px !important;
+            }
+            .contact-form-btn button {
+                width: 40px !important;
+                height: 40px !important;
+            }
+            .contact-form-btn i {
+                font-size: 18px !important;
+            }
+        }
         #scrollUp {
             position: fixed !important;
             bottom: 130px !important;
             right: 20px !important;
-            z-index: 2147483647 !important;
+            z-index: 999 !important;
         }
         #scrollUp::before {
             content: '↑';
