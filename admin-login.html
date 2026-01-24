@@ -103,7 +103,7 @@
         </form>
     </div>
 
-    <script>
+    <!-- <script>
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -131,6 +131,61 @@
                     errorMsg.style.display = 'none';
                 }, 3000);
             }
+        });
+    </script> -->
+<script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            // Password ki abhi zaroorat nahi hai bypass ke liye
+            
+            // --- TEMPORARY BYPASS START (Testing ke liye) ---
+            // Hum API call ko skip kar rahe hain
+            console.log("Bypassing Login for Local Testing...");
+
+            // Fake Token aur Data set karein (taaki dashboard error na de)
+            localStorage.setItem('adminToken', 'logged-in');
+            localStorage.setItem('currentAdmin', username || 'Admin'); 
+
+            // Seedha Dashboard par bhej dein
+            window.location.href = 'admin-dashboard.html';
+            return; 
+            // --- TEMPORARY BYPASS END ---
+
+
+            // --- ORIGINAL CODE (Jab deploy karein tab upar wala hatayein aur ise uncomment karein) ---
+            /*
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+            
+            try {
+                const res = await fetch(`${API_URL}/api/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    localStorage.setItem('adminToken', 'logged-in');
+                    localStorage.setItem('currentAdmin', username);
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    throw new Error('Login failed');
+                }
+            } catch (err) {
+                console.error(err);
+                errorMsg.textContent = 'Invalid username or password (Server Error)';
+                errorMsg.style.display = 'block';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
+            }
+            */
         });
     </script>
 </body>
