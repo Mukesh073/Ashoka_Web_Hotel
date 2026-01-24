@@ -412,22 +412,22 @@
         });
 
 async function generateLink() {
-    // 1. Sirf Zaroori Data Uthana
+    // 1. Retrieve necessary data from the form
     const fullname = document.getElementById('fullname').value;
     const mobile = document.getElementById('mobile').value;
     const amount = document.getElementById('amount').value;
     const room = document.getElementById('room').value;
     
-    // 2. Check karna ki data bhara hai ya nahi
+    // 2. Validate if all required fields are filled
     if (!fullname || !mobile || !room || !amount) {
         alert('Please fill Full Name, Mobile, Room, and Amount first!');
         return;
     }
     
-    // Note: Humne yahan 'createBooking' hata diya hai taaki backend error na aaye.
-    // Link bina database save kiye bhi ban jayega.
+    // Note: 'createBooking' (API call) is skipped here to prevent backend errors.
+    // The link is generated purely on the frontend without saving to the database.
     
-    // 3. Room ke hisab se sahi page select karna
+    // 3. Select the correct page based on the selected room type
     const roomPages = {
         'Standard Room': 'standard.html',
         'Executive Room': 'executive.html',
@@ -435,17 +435,17 @@ async function generateLink() {
         'Suite Room': 'Suite.html'
     };
     
-    // Agar room match na ho to default 'standard.html'
+    // Default to 'standard.html' if the room type doesn't match
     const roomPage = roomPages[room] || 'standard.html';
     
-    // 4. SHORT LINK Banana (Sabse Important Step)
-    // Hum 'base64' use nahi kar rahe. Seedha naam aur amount bhej rahe hain.
+    // 4. Generate SHORT LINK (Key Step)
+    // We are not using Base64 encoding. Passing name and amount as direct URL parameters.
     const baseUrl = window.location.origin + window.location.pathname.replace('admin-dashboard.html', roomPage);
     
     // Link example: domain.com/standard.html?name=Mukesh&amount=2500
     const shortLink = `${baseUrl}?name=${encodeURIComponent(fullname)}&amount=${amount}&mobile=${mobile}`;
 
-    // 5. Link ko Green Box me dikhana
+    // 5. Display the generated link in the UI (Green Box)
     const linkInput = document.getElementById('generatedLink');
     const linkBox = document.getElementById('linkBox');
     
@@ -453,11 +453,11 @@ async function generateLink() {
         linkInput.value = shortLink;
         linkBox.style.display = 'block';
     } else {
-        // Agar HTML me box nahi mila to alert me dikhayein
-        prompt("Short Link Generated (Copy karein):", shortLink);
+        // Fallback: Show a prompt if the link box element is missing in HTML
+        prompt("Short Link Generated (Please Copy):", shortLink);
     }
-}
-        function copyLink() {
+}    
+function copyLink() {
             const input = document.getElementById('generatedLink');
             input.select();
             document.execCommand('copy');
