@@ -412,22 +412,19 @@
         });
 
 async function generateLink() {
-    // 1. Retrieve necessary data from the form
+    // 1. Retrieve data from the form
     const fullname = document.getElementById('fullname').value;
     const mobile = document.getElementById('mobile').value;
     const amount = document.getElementById('amount').value;
     const room = document.getElementById('room').value;
     
-    // 2. Validate if all required fields are filled
+    // 2. Validate input fields
     if (!fullname || !mobile || !room || !amount) {
         alert('Please fill Full Name, Mobile, Room, and Amount first!');
         return;
     }
     
-    // Note: 'createBooking' (API call) is skipped here to prevent backend errors.
-    // The link is generated purely on the frontend without saving to the database.
-    
-    // 3. Select the correct page based on the selected room type
+    // 3. Select the correct page based on room type
     const roomPages = {
         'Standard Room': 'standard.html',
         'Executive Room': 'executive.html',
@@ -435,17 +432,21 @@ async function generateLink() {
         'Suite Room': 'Suite.html'
     };
     
-    // Default to 'standard.html' if the room type doesn't match
-    const roomPage = roomPages[room] || 'standard.html';
+    // Default to 'standard.html' if room type doesn't match
+    const targetPage = roomPages[room] || 'standard.html';
     
-    // 4. Generate SHORT LINK (Key Step)
-    // We are not using Base64 encoding. Passing name and amount as direct URL parameters.
-    const baseUrl = window.location.origin + window.location.pathname.replace('admin-dashboard.html', roomPage);
+    // 4. FIX: Dynamic URL Generation logic
+    // Get the current full URL
+    const currentUrl = window.location.href;
     
-    // Link example: domain.com/standard.html?name=Mukesh&amount=2500
-    const shortLink = `${baseUrl}?name=${encodeURIComponent(fullname)}&amount=${amount}&mobile=${mobile}`;
+    // Get the base path (everything before the last '/')
+    // This removes 'admin-dashboard1.html' or 'admin-dashboard.html' from the URL
+    const basePath = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1); 
+    
+    // Construct the new link: Base Path + Target Page + Parameters
+    const shortLink = `${basePath}${targetPage}?name=${encodeURIComponent(fullname)}&amount=${amount}&mobile=${mobile}`;
 
-    // 5. Display the generated link in the UI (Green Box)
+    // 5. Display the link in the Green Box
     const linkInput = document.getElementById('generatedLink');
     const linkBox = document.getElementById('linkBox');
     
@@ -453,10 +454,10 @@ async function generateLink() {
         linkInput.value = shortLink;
         linkBox.style.display = 'block';
     } else {
-        // Fallback: Show a prompt if the link box element is missing in HTML
-        prompt("Short Link Generated (Please Copy):", shortLink);
+        // Fallback: Show prompt if elements are missing
+        prompt("Short Link Generated:", shortLink);
     }
-}    
+}
 function copyLink() {
             const input = document.getElementById('generatedLink');
             input.select();
