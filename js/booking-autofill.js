@@ -103,7 +103,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const checkin = document.getElementById('checkin').value;
                 const room = document.querySelector('.breadcrumb-title h2').textContent;
                 
-                const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+                const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                    ? 'http://localhost:5000'
+                    : '';
                 const bookings = await fetch(`${API_URL}/api/bookings`).then(r => r.json());
                 const existing = bookings.find(b => 
                     b.mobile === mobile && 

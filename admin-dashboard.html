@@ -221,6 +221,24 @@
 
     <script src="js/api.js"></script>
     <script>
+        let bookingsCache = null;
+        let cacheTime = 0;
+        const CACHE_DURATION = 5000;
+
+        async function getCachedBookings() {
+            const now = Date.now();
+            if (bookingsCache && (now - cacheTime) < CACHE_DURATION) {
+                return bookingsCache;
+            }
+            bookingsCache = await getBookings();
+            cacheTime = now;
+            return bookingsCache;
+        }
+
+        function clearCache() {
+            bookingsCache = null;
+            cacheTime = 0;
+        }
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const btn = document.querySelector('.mobile-toggle');
@@ -259,67 +277,82 @@
                 btn.innerHTML = '<i class="bi bi-list"></i>';
             }
             
-            if (section === 'bookings') loadBookings();
-            if (section === 'dashboard') loadDashboard();
+            if (section === 'bookings') setTimeout(() => loadBookings(), 0);
+            if (section === 'dashboard') setTimeout(() => loadDashboard(), 0);
         }
 
         async function loadDashboard() {
-            const bookings = await getBookings();
-            const today = new Date().toDateString();
-            const todayBookings = bookings.filter(b => new Date(b.created_at).toDateString() === today);
-            const pendingBookings = bookings.filter(b => b.status === 'pending');
-            
-            document.getElementById('totalBookings').textContent = bookings.length;
-            document.getElementById('todayBookings').textContent = todayBookings.length;
-            document.getElementById('pendingBookings').textContent = pendingBookings.length;
+            try {
+                const bookings = await getBookings();
+                const today = new Date().toDateString();
+                const todayBookings = bookings.filter(b => new Date(b.created_at).toDateString() === today);
+                const pendingBookings = bookings.filter(b => b.status === 'pending');
+                
+                document.getElementById('totalBookings').textContent = bookings.length;
+                document.getElementById('todayBookings').textContent = todayBookings.length;
+                document.getElementById('pendingBookings').textContent = pendingBookings.length;
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
         }
 
         async function loadBookings() {
-            const bookings = await getBookings();
-            const list = document.getElementById('bookingsList');
-            
-            if (bookings.length === 0) {
-                list.innerHTML = '<div class="alert alert-info">No bookings found</div>';
-                return;
-            }
+            try {
+                const bookings = await getBookings();
+                const list = document.getElementById('bookingsList');
+                
+                if (bookings.length === 0) {
+                    list.innerHTML = '<div class="alert alert-info">No bookings found</div>';
+                    return;
+                }
 
-            let html = '';
-            bookings.forEach(b => {
-                const receiptImg = b.receipt ? `<div class="mt-2"><img src="${b.receipt}" style="max-width: 200px; border: 2px solid #ddd; border-radius: 5px; cursor: pointer;" onclick="window.open('${b.receipt}', '_blank')" title="Click to view full size"></div>` : '<p class="text-muted">No receipt uploaded</p>';
-                const confirmBtn = b.status === 'confirmed' ? '' : `<button class="btn btn-sm btn-success ms-2" onclick="updateStatus('${b.id}', 'confirmed')">Confirm</button>`;
-                html += `
-                    <div class="booking-card">
-                        <h5>${b.fullname}</h5>
-                        <p><strong>Mobile:</strong> ${b.mobile} | <strong>Room:</strong> ${b.room}</p>
-                        <p><strong>Check-in:</strong> ${b.checkin} | <strong>Check-out:</strong> ${b.checkout}</p>
-                        <p><strong>Adults:</strong> ${b.adults} | <strong>Amount:</strong> ₹${b.amount}</p>
-                        ${receiptImg}
-                        <div class="mt-2">
-                            <span class="badge bg-${b.status === 'confirmed' ? 'success' : 'warning'}">${b.status}</span>
-                            ${confirmBtn}
-                            <button class="btn btn-sm btn-danger ms-2" onclick="deleteBooking('${b.id}')">Delete</button>
+                let html = '';
+                bookings.forEach(b => {
+                    const receiptImg = b.receipt ? `<div class="mt-2"><img src="${b.receipt}" style="max-width: 200px; border: 2px solid #ddd; border-radius: 5px; cursor: pointer;" onclick="window.open('${b.receipt}', '_blank')" title="Click to view full size"></div>` : '<p class="text-muted">No receipt uploaded</p>';
+                    const confirmBtn = b.status === 'confirmed' ? '' : `<button class="btn btn-sm btn-success ms-2" onclick="updateStatus('${b.id}', 'confirmed')">Confirm</button>`;
+                    html += `
+                        <div class="booking-card">
+                            <h5>${b.fullname}</h5>
+                            <p><strong>Mobile:</strong> ${b.mobile} | <strong>Room:</strong> ${b.room}</p>
+                            <p><strong>Check-in:</strong> ${b.checkin} | <strong>Check-out:</strong> ${b.checkout}</p>
+                            <p><strong>Adults:</strong> ${b.adults} | <strong>Amount:</strong> ₹${b.amount}</p>
+                            ${receiptImg}
+                            <div class="mt-2">
+                                <span class="badge bg-${b.status === 'confirmed' ? 'success' : 'warning'}">${b.status}</span>
+                                ${confirmBtn}
+                                <button class="btn btn-sm btn-danger ms-2" onclick="deleteBooking('${b.id}')">Delete</button>
+                            </div>
                         </div>
-                    </div>
-                `;
-            });
-            list.innerHTML = html;
+                    `;
+                });
+                list.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                document.getElementById('bookingsList').innerHTML = '<div class="alert alert-danger">Error loading bookings</div>';
+            }
         }
 
         async function updateStatus(id, status) {
             await updateBooking(id, { status });
             alert('Booking confirmed!');
-            loadBookings();
-            loadDashboard();
+            setTimeout(() => {
+                loadBookings();
+                loadDashboard();
+            }, 0);
         }
 
         async function deleteBooking(id) {
             if (confirm('Delete this booking?')) {
-                const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
-                await fetch(`${API_URL}/api/bookings/${id}`, {
+                const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                    ? 'http://localhost:5000'
+                    : '';
+                const response = await fetch(`${API_URL}/api/bookings/${id}`, {
                     method: 'DELETE'
                 });
-                loadBookings();
-                loadDashboard();
+                if (response.ok) {
+                    loadBookings();
+                    loadDashboard();
+                }
             }
         }
 
@@ -450,17 +483,11 @@
             };
             await createBooking(booking);
             
-            const roomPages = {
-                'Standard Room': 'standard.html',
-                'Executive Room': 'executive.html',
-                'Super Executive Room': 'super executive.html',
-                'Suite Room': 'Suite.html'
-            };
-            
-            const roomPage = roomPages[data.room] || 'standard.html';
+            // Create short URL
             const encoded = btoa(JSON.stringify(data));
-            const link = window.location.origin + window.location.pathname.replace('admin-dashboard.html', roomPage) + '?data=' + encoded;
-            document.getElementById('generatedLink').value = link;
+            const shortUrlResponse = await createShortUrl(encoded, data.room);
+            
+            document.getElementById('generatedLink').value = shortUrlResponse.url;
             document.getElementById('linkBox').style.display = 'block';
             loadDashboard();
         }
@@ -475,6 +502,9 @@
         if (!localStorage.getItem('adminToken')) {
             window.location.href = 'admin-login.html';
         } else {
+            document.getElementById('totalBookings').textContent = 'Loading...';
+            document.getElementById('todayBookings').textContent = 'Loading...';
+            document.getElementById('pendingBookings').textContent = 'Loading...';
             loadDashboard();
         }
     </script>

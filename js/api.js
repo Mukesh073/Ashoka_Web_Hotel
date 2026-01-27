@@ -1,4 +1,4 @@
-const API_URL = window.location.hostname === 'localhost' 
+const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:5000/api' 
   : '/api';
 
@@ -48,6 +48,16 @@ async function loginAdmin(data) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
+  });
+  return await res.json();
+}
+
+// Short URL function
+async function createShortUrl(data, room) {
+  const res = await fetch(`${API_URL}/short-url`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data, room })
   });
   return await res.json();
 }
