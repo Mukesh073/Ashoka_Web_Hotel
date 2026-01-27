@@ -39,8 +39,20 @@ const adminSchema = new mongoose.Schema({
   created_at: { type: Date, default: Date.now }
 });
 
+const shortUrlSchema = new mongoose.Schema({
+  shortId: { type: String, unique: true },
+  data: String,
+  room: String,
+  created_at: { type: Date, default: Date.now }
+});
+
 const Booking = mongoose.models.Booking || mongoose.model('Booking', bookingSchema);
 const Admin = mongoose.models.Admin || mongoose.model('Admin', adminSchema);
+const ShortUrl = mongoose.models.ShortUrl || mongoose.model('ShortUrl', shortUrlSchema);
+
+function generateShortId() {
+  return Math.random().toString(36).substr(2, 8);
+}
 
 app.get('/api/bookings', async (req, res) => {
   await connectDB();
@@ -88,6 +100,36 @@ app.post('/api/admin/login', async (req, res) => {
     res.json({ success: true, admin });
   } else {
     res.status(401).json({ success: false });
+  }
+});
+
+app.post('/api/short-url', async (req, res) => {
+  await connectDB();
+  const shortId = generateShortId();
+  const shortUrl = new ShortUrl({
+    shortId,
+    data: req.body.data,
+    room: req.body.room
+  });
+  await shortUrl.save();
+  const url = `${req.protocol}://${req.get('host')}/book/${shortId}`;
+  res.json({ shortId, url });
+});
+
+app.get('/book/:shortId', async (req, res) => {
+  await connectDB();
+  const shortUrl = await ShortUrl.findOne({ shortId: req.params.shortId });
+  if (shortUrl) {
+    const roomFileMap = {
+      'Standard Room': 'standard.html',
+      'Executive Room': 'executive.html',
+      'Super Executive Room': 'super executive.html',
+      'Suite Room': 'Suite.html'
+    };
+    const fileName = roomFileMap[shortUrl.room] || `${shortUrl.room.toLowerCase().replace(' ', '-')}.html`;
+    res.redirect(`/${fileName}?data=${shortUrl.data}`);
+  } else {
+    res.status(404).send('Link not found');
   }
 });
 
