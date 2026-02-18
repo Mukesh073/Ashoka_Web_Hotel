@@ -556,9 +556,9 @@
     <div class="copyright-wrap" style="padding: 0.2em 0; min-height: 10px; line-height: 1.0;">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6">
-                    Copyright © Ashoka Hotel 2025 . All rights reserved.
-                </div>
+                         <div class="col-lg-6 col-md-6">
+    Copyright © Ashoka Hotel <span id="year"></span>. All rights reserved.
+</div>
                 <div class="col-lg-6 col-md-6 text-right text-xl-right white-text">
                     <span>Developed by <a href="https://www.shineinfosolutions.in/" style="color: orange;"> Shine Infosolutions </a></span>
                 </div>
@@ -584,7 +584,10 @@
         function openReservationPopup(){document.getElementById('reservationPopup').style.display='flex'}
         function closeReservationPopup(){document.getElementById('reservationPopup').style.display='none'}
     </script>
-
+<script>
+    const currentYear = new Date().getFullYear(); 
+    document.getElementById('year').textContent = currentYear;
+</script>
     <script src="js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="js/vendor/jquery-3.6.0.min.js"></script>
     <script src="js/popper.min.js"></script>

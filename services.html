@@ -646,9 +646,9 @@
     <div class="copyright-wrap" style="padding: 0.2em 0; min-height: 10px; line-height: 1.0;">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6">
-                    Copyright © Ashoka Hotel 2025 . All rights reserved.
-                </div>
+                         <div class="col-lg-6 col-md-6">
+    Copyright © Ashoka Hotel <span id="year"></span>. All rights reserved.
+</div>
                 <div class="col-lg-6 col-md-6 text-right text-xl-right white-text">
                     <span>Developed by <a href="https://www.shineinfosolutions.in/" style="color: orange;"> Shine Infosolutions </a></span>
                 </div>
@@ -675,7 +675,10 @@
     <script src="js/jquery.magnific-popup.min.js"></script>
     <script src="js/element-in-view.js"></script>
     <script src="js/main.js"></script>
-    
+    <script>
+    const currentYear = new Date().getFullYear(); 
+    document.getElementById('year').textContent = currentYear;
+</script>
     <script>
         // Form Popup Functions
         function openFormPopup() {
